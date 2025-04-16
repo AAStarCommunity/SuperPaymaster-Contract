@@ -134,6 +134,23 @@ interface ISuperPaymaster {
      */
     function getSponsorStake(address sponsor) external view returns (uint256);
 
+    /**
+     * @dev Gets the withdrawal information
+     * @param owner The address to check the withdrawal information for
+     * @return amount Amount of ETH to withdraw
+     * @return unlockTime Time when the withdrawal can be executed
+     * @return executed Whether the withdrawal has been executed
+     */
+    function getWithdrawalInfo(address owner) external view returns (uint256 amount, uint64 unlockTime, bool executed);
+
+    /**
+     * @notice Get the balance of an ERC20 token for a given address
+     * @param owner The address to check the balance for
+     * @param tokenAddress The address of the ERC20 token
+     * @return The balance of the token for the given address
+     */
+    function getERC20Balance(address owner, address tokenAddress) external view returns (uint256);
+
     // Events
     event SponsorRegistered(address indexed sponsor);
     event SponsorConfigSet(address indexed sponsor, address indexed token, uint256 exchangeRate, uint256 warningThreshold, address signer);
