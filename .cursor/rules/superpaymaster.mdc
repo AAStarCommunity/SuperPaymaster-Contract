@@ -6,14 +6,17 @@ alwaysApply: true
 
 # SuperPaymaster
 
+## Background
 [solution.md](mdc:solution.md)，这是一个开源的SuperPaymaster项目，一个遵守ERC4337协议的paymaster，包括符合erc4337的签名paymaster relay server，一个改进的paymaster合约：SuperPaymaster；
 目标是任何个人或者社区，都可以基于此开源方案运行自己的paymaster来用自己发行的ERC20 gas token sponsor任何EVM交易。
 同时基于SDSS（Standard Decentralized Service System）提供了基于ENS的API发现、缓存、更新的去中心服务路由系统，任何用户使用一个接口来调用去中心后服务。
 
 本repo是合约部分，对于合约，我们建立了多账户系统，任何想运行自己paymaster，支持自己发行的ERC20 gas token的人，都可以在superpaymaster合约内stake，剩下的由服务来完成。
+
+## Project logic
 我们按照一个逻辑来持续完成项目开发：
 1. FEATURES.md：来自对文档 [solution.md](mdc:solution.md)的分析研究和展开，我们一个个完成和测试
-2. PLAN.md：开发和测试，基于foundry/forge的最佳实践，持续更新 [Plan.md](mdc:Plan.md)来进行项目管理
-3. CHANGES.md： 每完成一个feat测试和修改或者bug修复，都在此文件添加一次更新
+2. PLAN.md：内容来自于对FEATURES.md的技术方案展开，以及开发和测试规划分解，基于foundry/forge的最佳实践，持续更新 [Plan.md](mdc:Plan.md)来进行项目管理
+3. CHANGES.md： 按照PLAN.md文档，每完成一个feature测试和修改或者bug修复，都在此文件添加一次更新
 4. RELEASE.md：此文档在阶段feat完成后，进行发布的初始化和更新发布记录
 

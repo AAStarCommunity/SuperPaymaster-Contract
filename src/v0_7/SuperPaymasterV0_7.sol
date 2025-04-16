@@ -372,6 +372,16 @@ contract SuperPaymasterV0_7 is ISuperPaymaster, ReentrancyGuard, IPaymasterV7 {
     }
 
     /**
+     * @notice Get the available (non-locked) stake for a sponsor
+     * @param sponsor Address of the sponsor
+     * @return The amount of ETH that is not locked
+     */
+    function getSponsorUnlockedStake(address sponsor) external view returns (uint256) {
+        EnhancedSponsorStake storage stake = sponsorStakes[sponsor];
+        return stake.stakedAmount - stake.lockedAmount;
+    }
+
+    /**
      * @notice Get the locked amount for a specific userOp
      * @param sponsor Address of the sponsor
      * @param userOpHash Hash of the UserOperation
