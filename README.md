@@ -64,9 +64,10 @@ sequenceDiagram
 
     Bundler->>Bundler: Receive UserOp
     Bundler->>Bundler: Basic Validation (sig length, gas limits etc.)
-    Bundler->>SP: **[Bundler Check 1]** Read sponsorStakes(sponsor)
-    Bundler->>Bundler: **[Bundler Check 2]** Decode paymasterAndData, get sponsor, estimate maxEthCost
-    Bundler->>Bundler: **[Bundler Check 3]** Check onChainStake >= pendingCost[sponsor] + maxEthCost
+    Bundler->>SP: [Bundler Check 1] Read sponsorStakes(sponsor)
+    Bundler->>Bundler: [Bundler Check 2] Decode paymasterAndData, get sponsor, estimate maxEthCost
+    Bundler->>Bundler: [Bundler Check 3] Check onChainStake >= pendingCost[sponsor] + maxEthCost
+    
     alt Insufficient Stake in Bundler Check
         Bundler-->>SDK: Reject UserOp (stake limit)
     else Sufficient Stake
@@ -78,6 +79,7 @@ sequenceDiagram
         SP->>SP: Verify Signature (ecrecover)
         SP->>SP: Calculate maxEthCost from maxErc20Cost & rate
         SP->>SP: Check sponsorStakes[sponsor] >= maxEthCost (Contract Check)
+        
         alt Validation Failed in Contract
             SP-->>EP: Revert (e.g., bad sig, insufficient stake)
             EP-->>Bundler: Simulation Failed
@@ -87,6 +89,7 @@ sequenceDiagram
             SP-->>EP: Return context, validationData (timestamps)
             EP-->>Bundler: Simulation OK (return gas estimates)
         end
+        
         Bundler->>Bundler: Add valid UserOp to Mempool / Bundle
     end
 
@@ -97,7 +100,8 @@ sequenceDiagram
         SP->>SP: (Performs checks again)
         SP-->>EP: Return context, validationData
         EP->>userOp.sender: Execute UserOperation (CALL userOp.callData)
-        opt UserOp Execution Fails
+        
+        alt UserOp Execution Fails
              EP->>SP: call postOp(mode=opReverted, context, 0)
              SP->>SP: Handle revert (usually no stake change)
              SP-->>EP: Return
@@ -107,13 +111,14 @@ sequenceDiagram
             SP->>SP: Decode context (get sponsor, token, userOpHash etc.)
             SP->>SP: Check actualGasCost <= maxEthCost
             SP->>SP: Check sponsorStakes[sponsor] >= actualGasCost
-            SP->>SP: **Deduct actualGasCost from sponsorStakes[sponsor]**
+            SP->>SP: Deduct actualGasCost from sponsorStakes[sponsor]
             SP->>SP: Emit SponsorshipSuccess(...)
             SP->>SP: Check & Emit StakeWarning(...) if needed
             SP-->>EP: Return (signals successful payment)
         end
+        
         EP->>Bundler: Pay Bundler Fee (from EP stake)
-        Bundler->>Bundler: **Remove processed UserOp costs from pendingCost[sponsor]**
+        Bundler->>Bundler: Remove processed UserOp costs from pendingCost[sponsor]
     end
 ```
 
