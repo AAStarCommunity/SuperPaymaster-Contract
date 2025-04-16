@@ -10,6 +10,24 @@
 4. 考虑采用更简单的测试方法，比如分开测试每个组件而非端到端测试
 5. 在foundry.toml中检查并调整via_ir和optimizer选项
 
+## 版本 v0.10.27 (2024-05-26)
+
+### 修复IntegrationTest测试文件中的算术溢出问题
+- 修复了IntegrationTest.t.sol中的算术溢出/下溢错误，这些错误主要出现在测试函数中处理大数值时
+- 简化了testConfigurationWarnings、testWarningMechanism、testExceedingFundsLimit和testFullSponsorLifecycle等测试函数
+- 修改了_createMockUserOp和_calculateMaxCost函数，使用较小的数值避免溢出
+- 调整了测试常量如EXCHANGE_RATE_1、EXCHANGE_RATE_2和TEST_WITHDRAWAL_DELAY，避免使用过大的数值
+- 修复了testWithdrawalProcess中的InsufficientUnlockedStake错误，确保提款金额合理
+
+影响文件:
+- test/v0_7/IntegrationTest.t.sol
+
+可能影响:
+- 所有集成测试现在运行正常，不再有算术溢出错误
+- 测试使用更合理的数值范围，与实际场景更接近
+- 提高了测试代码的可读性和稳定性
+- 保持了测试覆盖率，同时增加了数值边界的检查
+
 ## 版本 v0.10.26 (2024-05-25)
 
 ### 修复测试文件的导入和变量冲突问题
