@@ -1,6 +1,7 @@
 
 /** 
  *  SourceUnit: /Users/jason/Dev/Community/SuperPaymaster-Contract/src/SuperPaymaster.sol
+ *  old version create by jason and AI，deprecated
 */
             
 ////// SPDX-License-Identifier-FLATTEN-SUPPRESS-WARNING: MIT
